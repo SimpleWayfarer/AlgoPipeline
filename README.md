@@ -31,9 +31,10 @@ http://localhost:8080
 4) Установка необходимых плагинов - Install suggested plugins
 5) Создание первого пользователя и настройка URL для Jenkins 
 
-#Запуск пайплайна
+# Запуск пайплайна
 1) Создать Item -> Pipeline
 2) Внизу Definition -> Pipeline Script From SCM -> git -> Ссылка на репозиторий  -> Branches to build -> ./main -> Save
 3) Собрать сейчас
    
    
+
