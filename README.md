@@ -24,7 +24,7 @@ apt install -y docker.io
 ```
 docker exec jenkins cat /var/jenkins_home/secrets/initialAdminPassword
 ```
-3) Первый вход в Jenkins с помощью пароля администартора
+3) Первый вход в Jenkins через браузер с помощью пароля администартора
 ```
 http://localhost:8080
 ```
@@ -37,4 +37,5 @@ http://localhost:8080
 3) Собрать сейчас
    
    
+
 
