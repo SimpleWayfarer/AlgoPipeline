@@ -18,18 +18,23 @@ build_a:
   stage: build
   script:
     - docker info
-    - docker build -t program_a ./program_a
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
+    - docker build -t "$IMAGE_A:latest" ./program_a
+    - docker push "$IMAGE_A:latest"
 
 build_b:
   stage: build
   script:
     - docker info
-    - docker build -t program_b ./program_b
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
+    - docker build -t "$IMAGE_B:latest" ./program_b
+    - docker push "$IMAGE_B:latest"
 
 # ---------- RUN ----------
 run_a:
   stage: run
   script:
+    - docker pull "$IMAGE_A:latest"
     - docker run --rm
         -v $CI_PROJECT_DIR/tests:/tests
         -v $CI_PROJECT_DIR/program_a/results:/results
@@ -41,6 +46,7 @@ run_a:
 run_b:
   stage: run
   script:
+    - docker pull "$IMAGE_B:latest"
     - docker run --rm
         -v $CI_PROJECT_DIR/tests:/tests
         -v $CI_PROJECT_DIR/program_b/results:/results
