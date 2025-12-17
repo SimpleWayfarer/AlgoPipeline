@@ -1,7 +1,7 @@
-# Pipeline (Docker + Jenkins | self-hosted GitLab) для сравнения двух решений алгозадачи.
+# Pipeline (Docker + Jenkins | Self-Hosted GitLab) для сравнения двух решений алгозадачи.
 Решения необходимо вставить в функции main в файлах program_a/main.py и program_b/main.py
-Тесты необходимо разместить в папке tests
-# Установка необходимых компонентов (Ubuntu)
+Тесты необходимо разместить в папке tests.
+# Установка необходимых компонентов 
 1) [Установить Docker](https://docs.docker.com/engine/install/ubuntu/)
 
 # Установка и найстрока Jenkins
@@ -91,3 +91,4 @@ git remote add gitlab http://localhost:8000/root/algopipeline.git
 git push gitlab master
 ```
 3) Наблюдать за выполнением Pipeline в браузере: Algopipeline -> Build -> Pipelines
+
