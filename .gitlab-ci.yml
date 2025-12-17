@@ -9,32 +9,16 @@ variables:
   DOCKER_HOST: tcp://docker:2375
 
 stages:
-  - build
-  - run
+  - program_a
+  - program_b
   - compare
 
-# ---------- BUILD ----------
-build_a:
-  stage: build
+# ---------- BUILD AND RUN A----------
+program_a:
+  stage: program_a
   script:
     - docker info
-    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
-    - docker build -t "$IMAGE_A:latest" ./program_a
-    - docker push "$IMAGE_A:latest"
-
-build_b:
-  stage: build
-  script:
-    - docker info
-    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
-    - docker build -t "$IMAGE_B:latest" ./program_b
-    - docker push "$IMAGE_B:latest"
-
-# ---------- RUN ----------
-run_a:
-  stage: run
-  script:
-    - docker pull "$IMAGE_A:latest"
+    - docker build -t program_a ./program_a
     - docker run --rm
         -v $CI_PROJECT_DIR/tests:/tests
         -v $CI_PROJECT_DIR/program_a/results:/results
@@ -43,10 +27,12 @@ run_a:
     paths:
       - program_a/results
 
-run_b:
-  stage: run
+# ---------- BUILD AND RUN B ----------
+program_b:
+  stage: program_b
   script:
-    - docker pull "$IMAGE_B:latest"
+    - docker info
+    - docker build -t program_b ./program_b
     - docker run --rm
         -v $CI_PROJECT_DIR/tests:/tests
         -v $CI_PROJECT_DIR/program_b/results:/results
