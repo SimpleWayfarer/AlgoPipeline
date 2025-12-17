@@ -2,7 +2,7 @@
 Решения необходимо вставить в функции main в файлах program_a/main.py и program_b/main.py
 Тесты необходимо разместить в папке tests
 # Установка необходимых компонентов (Ubuntu)
-1) Установить Docker - https://docs.docker.com/engine/install/ubuntu/
+1) [Установить Docker](https://docs.docker.com/engine/install/ubuntu/)
 2) Установка и запуск Jenkins
 ```
 docker volume create jenkins_home
@@ -37,5 +37,6 @@ http://localhost:8080
 3) Собрать сейчас
    
    
+
 
 
