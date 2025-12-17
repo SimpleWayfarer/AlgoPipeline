@@ -1,6 +1,9 @@
 image: docker:26
+
 services:
   - docker:26-dind
+    alias docker
+
 variables:
   DOCKER_TLS_CERTDIR: ""
   DOCKER_HOST: tcp://docker:2375
@@ -36,7 +39,6 @@ run_a:
 run_b:
   stage: run
   script:
-    - mkdir -p results_b
     - docker run --rm
         -v $CI_PROJECT_DIR/tests:/tests
         -v $CI_PROJECT_DIR/program_b/results:/results
