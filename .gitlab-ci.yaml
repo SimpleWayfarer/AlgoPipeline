@@ -1,0 +1,58 @@
+image: docker:26
+
+services:
+  - docker:26-dind
+
+variables:
+  DOCKER_HOST: tcp://docker:2375
+  DOCKER_TLS_CERTDIR: ""
+
+stages:
+  - build
+  - run
+  - compare
+
+# ---------- BUILD ----------
+build_a:
+  stage: build
+  script:
+    - docker build -t program_a ./program_a
+
+build_b:
+  stage: build
+  script:
+    - docker build -t program_b ./program_b
+
+# ---------- RUN ----------
+run_a:
+  stage: run
+  script:
+    - docker run --rm
+        -v $CI_PROJECT_DIR/tests:/tests
+        -v $CI_PROJECT_DIR/program_a/results:/results
+        program_a
+  artifacts:
+    paths:
+      - program_a/results
+
+run_b:
+  stage: run
+  script:
+    - mkdir -p results_b
+    - docker run --rm
+        -v $CI_PROJECT_DIR/tests:/tests
+        -v $CI_PROJECT_DIR/program_b/results:/results
+        program_b
+  artifacts:
+    paths:
+      - program_b/results
+
+# ---------- COMPARE ----------
+compare_results:
+  stage: compare
+  image: python:3.10
+  dependencies:
+    - run_a
+    - run_b
+  script:
+    - python compare.py results_a results_b
