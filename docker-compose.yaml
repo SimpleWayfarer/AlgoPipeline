@@ -1,6 +1,7 @@
 services:
   gitlab:
     image: gitlab/gitlab-ce:latest
+    container_name: gitlab
     hostname: "localhost"
     restart: unless-stopped
     environment:
@@ -9,44 +10,27 @@ services:
         gitlab_rails['gitlab_shell_ssh_port'] = 8822
         gitlab_rails['initial_root_password'] = 'CHANGEME123'
     ports:
-      - "8000:80"
+      - "80:80"
       - "8822:22"
     volumes:
-      - ./gitlab-local/data/docker/gitlab/etc/gitlab:/etc/gitlab
-      - ./gitlab-local/data/docker/gitlab/var/opt/gitlab:/var/opt/gitlab
-      - ./gitlab-local/data/docker/gitlab/var/log/gitlab:/var/log/gitlab
-    networks:
-      - gitlab_net
-
-  dind:
-    image: docker:20-dind
-    restart: always
-    privileged: true
-    environment:
-      DOCKER_TLS_CERTDIR: ""
-    command: [
-      "--host", "tcp://0.0.0.0:2375",
-      "--storage-driver=overlay2",
-      "--tls=false"
-    ]
-    volumes:
-      - ./gitlab-local/data/dind/docker:/var/lib/docker
+      - ./gitlab/data/docker/gitlab/etc/gitlab:/etc/gitlab
+      - ./gitlab/data/docker/gitlab/var/opt/gitlab:/var/opt/gitlab
+      - ./gitlab/data/docker/gitlab/var/log/gitlab:/var/log/gitlab
     networks:
       - gitlab_net
 
   gitlab-runner:
     image: gitlab/gitlab-runner:alpine
+    container_name: gitlab-runner
     restart: unless-stopped
-    environment:
-      DOCKER_HOST: "tcp://dind:2375"
+    privileged: true
     volumes:
-      - ./gitlab-local/config:/etc/gitlab-runner:z
+      - ./gitlab/config:/etc/gitlab-runner
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - gitlab_net
-    depends_on:
-      - dind
 
 networks:
   gitlab_net:
     name: gitlab_net
+
