@@ -44,7 +44,7 @@ program_b:
 # ---------- COMPARE ----------
 compare_results:
   stage: compare
-  image: python:3.10
+  image: python:3.12-slim
   dependencies:
     - program_a
     - program_b
