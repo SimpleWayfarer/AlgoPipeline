@@ -46,7 +46,7 @@ compare_results:
   stage: compare
   image: python:3.10
   dependencies:
-    - run_a
-    - run_b
+    - program_a
+    - program_b
   script:
     - python compare.py results_a results_b
